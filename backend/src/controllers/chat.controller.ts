@@ -3,7 +3,7 @@ import { z } from 'zod'
 import * as sessionService from '../services/session.service'
 import * as conversationService from '../services/conversation.service'
 import * as ragService from '../services/rag.service'
-import * as claudeService from '../services/claude.service'
+import * as geminiService from '../services/gemini.service'
 import { supabase } from '../config/supabase'
 
 const sendMessageSchema = z.object({
@@ -50,8 +50,8 @@ export async function sendMessage(req: Request, res: Response, next: NextFunctio
     const articles = await ragService.searchKnowledge(message, 3)
     const knowledgeContext = ragService.formatContext(articles)
 
-    // 5. Call Claude
-    const response = await claudeService.chat({
+    // 5. Call Gemini
+    const response = await geminiService.chat({
       userMessage: message,
       history,
       knowledgeContext,
