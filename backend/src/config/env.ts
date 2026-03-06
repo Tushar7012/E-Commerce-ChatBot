@@ -6,7 +6,7 @@ dotenv.config()
 const envSchema = z.object({
   PORT: z.string().default('3001'),
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
-  CORS_ORIGIN: z.string().default('http://localhost:5173'),
+  CORS_ORIGIN: z.string().default('http://localhost:5173').optional(),
 
   SUPABASE_URL: z.string().min(1, 'SUPABASE_URL is required'),
   SUPABASE_SERVICE_ROLE_KEY: z.string().min(1, 'SUPABASE_SERVICE_ROLE_KEY is required'),
@@ -29,7 +29,7 @@ if (!parsed.success) {
 export const env = {
   port: parseInt(parsed.data.PORT),
   nodeEnv: parsed.data.NODE_ENV,
-  corsOrigin: parsed.data.CORS_ORIGIN,
+  corsOrigin: parsed.data.CORS_ORIGIN ?? 'http://localhost:5173',
   supabase: {
     url: parsed.data.SUPABASE_URL,
     serviceRoleKey: parsed.data.SUPABASE_SERVICE_ROLE_KEY,

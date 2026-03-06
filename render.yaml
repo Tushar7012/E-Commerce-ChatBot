@@ -1,0 +1,42 @@
+# render.yaml — Single-service deployment for TechGear AI Support
+# Docs: https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: techgear-ai-support
+    runtime: node
+    region: oregon          # closest free-tier region; change if needed
+    plan: free
+
+    # ── Build ─────────────────────────────────────────────────────────────────
+    # 1. Install all workspace dependencies
+    # 2. Build the Vite frontend  →  frontend/dist/
+    # 3. Compile the TypeScript backend  →  backend/dist/
+    buildCommand: npm install && npm run build
+
+    # ── Start ─────────────────────────────────────────────────────────────────
+    # Express serves both the API (/api/*) and the React SPA (frontend/dist)
+    startCommand: node backend/dist/index.js
+
+    # ── Environment variables ─────────────────────────────────────────────────
+    # Set these in the Render dashboard → Environment tab.
+    # DO NOT commit real secrets here.
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "3001"
+      - key: SUPABASE_URL
+        sync: false          # fill in Render dashboard
+      - key: SUPABASE_ANON_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        value: gemini-flash-lite-latest
+      - key: VITE_SUPABASE_URL
+        sync: false
+      - key: VITE_SUPABASE_ANON_KEY
+        sync: false

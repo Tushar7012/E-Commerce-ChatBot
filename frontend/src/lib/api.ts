@@ -13,7 +13,10 @@ import type {
 } from '@/types'
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:3001',
+  // In production, frontend is served from Express on the same origin,
+  // so we use a relative baseURL ('') — no env var needed.
+  // In local dev, set VITE_API_BASE_URL=http://localhost:3001 in frontend/.env
+  baseURL: import.meta.env.VITE_API_BASE_URL ?? '',
   timeout: 30000,
 })
 
